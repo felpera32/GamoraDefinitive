@@ -155,11 +155,11 @@ $moedas = $dadosUsuario ? $dadosUsuario['moedas'] : 0;
                                 <span class="profile-name"><?php echo $nomeUsuario; ?></span>
                             </div>
                             <hr class="dropdown-separator">
-                            <a href="perfil.php" role="menuitem">
+                            <a href="../perfil.php" role="menuitem">
                                 <i class="icon-user" aria-hidden="true"></i>
                                 Meu Perfil
                             </a>
-                            <a href="pedidos.php" role="menuitem">
+                            <a href="../pedidos.php" role="menuitem">
                                 <i class="icon-orders" aria-hidden="true"></i>
                                 Meus Pedidos
                             </a>
@@ -168,7 +168,7 @@ $moedas = $dadosUsuario ? $dadosUsuario['moedas'] : 0;
                                 Configurações
                             </a>
                             <hr class="dropdown-separator">
-                            <a href="navbar/logout.php" role="menuitem" class="logout-link">
+                            <a href="logout.php" role="menuitem" class="logout-link">
                                 <i class="icon-logout" aria-hidden="true"></i>
                                 Sair
                             </a>

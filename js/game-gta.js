@@ -42,13 +42,13 @@ document.addEventListener("DOMContentLoaded", function () {
     let images = [
         "../src/Capas/gta/capa.jpg",
         
-        "../src/Capas/gta/gameplay1.png",
+        "../src/Capas/gta/gameplay1.jpg",
 
-        "../src/Capas/gta/gameplay2.png",
+        "../src/Capas/gta/gameplay2.jpg",
 
-        "../src/Capas/gta/gameplay3.png",
+        "../src/Capas/gta/gameplay3.jpg",
 
-        "../src/Capas/gta/gameplay4.png"
+        "../src/Capas/gta/gameplay4.jpg"
     ];
 
     let currentIndex = 0;

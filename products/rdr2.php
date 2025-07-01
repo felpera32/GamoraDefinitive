@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jogo: Celeste</title>
+    <title>Red Dead Redemption 2</title>
     <link rel="stylesheet" href="../css/games.css">
     <script src="../js/game-rd.js"></script>
 </head>
@@ -41,12 +41,12 @@
         <div class="left-column">
             <div class="game-image-container">
                 <button class="nav prev" id="prev">&#10094;</button>
-                <img id="mainImage" src="../src/Capas/reddead/capa.jpg" alt="red dead">
+                <img id="mainImage" src="https://nosbastidores.com.br/wp-content/uploads/2024/10/rdr2.jpg" alt="red dead">
                 <button class="nav next" id="next">&#10095;</button>
             </div>
             <div class="thumbnails">
-                <img class="thumb active" src="../src/Capas/reddead/capa.jpg" alt="Thumbnail 1"
-                    onclick="changeImage('../src/Capas/reddead/capa.jpg', this)">
+                <img class="thumb active" src="https://nosbastidores.com.br/wp-content/uploads/2024/10/rdr2.jpg" alt="Thumbnail"
+                    onclick="changeImage('https://nosbastidores.com.br/wp-content/uploads/2024/10/rdr2.jpg', this)">
 
                 <img class="thumb" src="../src/Capas/reddead/gameplay1.jpg" alt="Thumbnail 1"
                     onclick="changeImage('../src/Capas/reddead/gameplay1.jpg', this)">

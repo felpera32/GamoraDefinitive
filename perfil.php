@@ -33,7 +33,7 @@
         $alertClass = "";
 
         // Buscar dados do cliente
-        $stmt = $conexao->prepare("SELECT * FROM Clientes WHERE idCliente = ?");
+        $stmt = $conn->prepare("SELECT * FROM Clientes WHERE idCliente = ?");
         $stmt->bind_param("i", $idCliente);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -58,7 +58,7 @@
                 $alertClass = "alert-danger";
             } else {
                 // Verificar se o email já existe (exceto para o usuário atual)
-                $stmt = $conexao->prepare("SELECT idCliente FROM Clientes WHERE email = ? AND idCliente != ?");
+                $stmt = $conn->prepare("SELECT idCliente FROM Clientes WHERE email = ? AND idCliente != ?");
                 $stmt->bind_param("si", $email, $idCliente);
                 $stmt->execute();
                 $emailResult = $stmt->get_result();
@@ -96,10 +96,10 @@
                     if (empty($mensagem)) {
                         // Preparar a consulta SQL de atualização
                         if ($senhaAlterada) {
-                            $stmt = $conexao->prepare("UPDATE Clientes SET nome = ?, email = ?, telefone = ?, cpf = ?, senha_hash = ?, ultimoAcesso = NOW() WHERE idCliente = ?");
+                            $stmt = $conn->prepare("UPDATE Clientes SET nome = ?, email = ?, telefone = ?, cpf = ?, senha_hash = ?, ultimoAcesso = NOW() WHERE idCliente = ?");
                             $stmt->bind_param("sssssi", $nome, $email, $telefone, $cpf, $novaSenhaHash, $idCliente);
                         } else {
-                            $stmt = $conexao->prepare("UPDATE Clientes SET nome = ?, email = ?, telefone = ?, cpf = ?, ultimoAcesso = NOW() WHERE idCliente = ?");
+                            $stmt = $conn->prepare("UPDATE Clientes SET nome = ?, email = ?, telefone = ?, cpf = ?, ultimoAcesso = NOW() WHERE idCliente = ?");
                             $stmt->bind_param("ssssi", $nome, $email, $telefone, $cpf, $idCliente);
                         }
 
@@ -118,7 +118,7 @@
                             $_SESSION['usuario']['nome'] = $nome;
                             $_SESSION['usuario']['email'] = $email;
                         } else {
-                            $mensagem = "Erro ao atualizar o perfil: " . $conexao->error;
+                            $mensagem = "Erro ao atualizar o perfil: " . $conn->error;
                             $alertClass = "alert-danger";
                         }
                     }

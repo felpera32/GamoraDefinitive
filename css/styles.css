@@ -7,27 +7,6 @@ body {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .outros-produtos {
     display: flex;
     flex-direction: row;
@@ -58,8 +37,11 @@ body {
     width: 112%;
 }
 
-button {
-    background-color: #7ed957;
+
+
+
+.produto-botoes{
+    background: linear-gradient(45deg, #7ed957, #5cb342);
     color: white;
     border: none;
     padding: 10px;
@@ -68,13 +50,11 @@ button {
     transition: background-color 0.3s;
 }
 
-button:hover {
-    background-color: #d6344d;
+.produto-botoes{
+    background: linear-gradient(45deg, #5cb342, #4a9c35);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(126, 217, 87, 0.6);
 }
-
-
-
-
 
 
 

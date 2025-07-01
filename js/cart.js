@@ -107,3 +107,263 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class CoinPaymentSystem {
+    constructor() {
+        this.userCoins = parseInt(document.getElementById('user-coins')?.textContent.replace(/,/g, '')) || 0;
+        this.coinsPerDollar = 100;
+        this.init();
+    }
+
+    init() {
+        this.updateCartTotal();
+        this.setupPaymentMethodListeners();
+        this.setupCartUpdateListeners();
+    }
+
+    updateCartTotal() {
+        const cartItems = document.querySelectorAll('.cart-item');
+        let total = 0;
+        
+        cartItems.forEach(item => {
+            const priceElement = item.querySelector('.cart-item-details p, .price');
+            if (priceElement) {
+                const priceText = priceElement.textContent.replace(/[R$\s]/g, '');
+                const price = parseFloat(priceText.replace(',', '.'));
+                if (!isNaN(price)) {
+                    total += price;
+                }
+            }
+        });
+        
+        this.cartTotal = total;
+        this.updateCoinsRequirement();
+    }
+
+    updateCoinsRequirement() {
+        const requiredCoins = Math.ceil(this.cartTotal * this.coinsPerDollar);
+        const totalCoinsNeededElement = document.getElementById('total-coins-needed');
+        const coinsRadio = document.getElementById('moedas');
+        const coinsLabel = document.querySelector('label[for="moedas"]');
+        const coinsPaymentElement = document.querySelector('.payment-method.coins');
+        const insufficientFundsElement = document.getElementById('insufficient-funds');
+        
+        if (totalCoinsNeededElement) {
+            totalCoinsNeededElement.textContent = requiredCoins.toLocaleString();
+        }
+
+        const hasSufficientCoins = this.userCoins >= requiredCoins;
+
+        if (coinsRadio && coinsPaymentElement) {
+            coinsRadio.disabled = !hasSufficientCoins;
+            
+            if (coinsLabel) {
+                coinsLabel.className = hasSufficientCoins ? '' : 'disabled';
+            }
+            
+            coinsPaymentElement.className = `payment-method coins ${hasSufficientCoins ? 'sufficient' : 'insufficient'}`;
+            
+            if (!hasSufficientCoins && coinsRadio.checked) {
+                coinsRadio.checked = false;
+                const firstAvailableMethod = document.querySelector('input[name="payment_method"]:not(:disabled)');
+                if (firstAvailableMethod) {
+                    firstAvailableMethod.checked = true;
+                }
+            }
+        }
+
+        if (insufficientFundsElement) {
+            if (!hasSufficientCoins && requiredCoins > 0) {
+                const missingCoins = requiredCoins - this.userCoins;
+                insufficientFundsElement.innerHTML = `Saldo insuficiente! Você precisa de mais ${missingCoins.toLocaleString()} moedas.`;
+                insufficientFundsElement.style.display = 'block';
+            } else {
+                insufficientFundsElement.style.display = 'none';
+            }
+        }
+
+        this.updateFinalizeButton();
+    }
+
+    setupPaymentMethodListeners() {
+        const paymentRadios = document.querySelectorAll('input[name="payment_method"]');
+        paymentRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                this.updateFinalizeButton();
+            });
+        });
+    }
+
+    setupCartUpdateListeners() {
+        const cartContainer = document.querySelector('.cart-container, .cart-items');
+        if (cartContainer) {
+            const observer = new MutationObserver(() => {
+                setTimeout(() => {
+                    this.updateCartTotal();
+                }, 100);
+            });
+            
+            observer.observe(cartContainer, {
+                childList: true,
+                subtree: true
+            });
+        }
+
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-item') || 
+                e.target.closest('.remove-item')) {
+                setTimeout(() => {
+                    this.updateCartTotal();
+                }, 100);
+            }
+        });
+    }
+
+    updateFinalizeButton() {
+        const finalizeButton = document.querySelector('.finalize-button, .checkout-button, button[type="submit"]');
+        const selectedPayment = document.querySelector('input[name="payment_method"]:checked');
+        
+        if (!finalizeButton) return;
+
+        if (selectedPayment && selectedPayment.value === 'moedas') {
+            const requiredCoins = Math.ceil(this.cartTotal * this.coinsPerDollar);
+            const hasSufficientCoins = this.userCoins >= requiredCoins;
+            
+            if (hasSufficientCoins) {
+                finalizeButton.disabled = false;
+                finalizeButton.textContent = `Pagar ${requiredCoins.toLocaleString()} Moedas`;
+                finalizeButton.style.backgroundColor = '#4CAF50';
+            } else {
+                finalizeButton.disabled = true;
+                finalizeButton.textContent = 'Saldo Insuficiente';
+                finalizeButton.style.backgroundColor = '#ff4d4d';
+            }
+        } else if (selectedPayment) {
+            finalizeButton.disabled = false;
+            finalizeButton.textContent = 'Finalizar Compra';
+            finalizeButton.style.backgroundColor = '';
+        } else {
+            finalizeButton.disabled = true;
+            finalizeButton.textContent = 'Selecione um Método de Pagamento';
+            finalizeButton.style.backgroundColor = '';
+        }
+    }
+
+    processCoinsPayment() {
+        const requiredCoins = Math.ceil(this.cartTotal * this.coinsPerDollar);
+        
+        if (this.userCoins < requiredCoins) {
+            alert('Saldo insuficiente para completar a compra!');
+            return false;
+        }
+
+        const formData = new FormData();
+        formData.append('action', 'process_coins_payment');
+        formData.append('coins_amount', requiredCoins);
+        formData.append('cart_total', this.cartTotal);
+
+        fetch('finalizar_compra.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                this.showPaymentSuccess(requiredCoins);
+                this.userCoins = data.new_balance;
+                document.getElementById('user-coins').textContent = this.userCoins.toLocaleString();
+                this.clearCart();
+            } else {
+                alert('Erro ao processar pagamento: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao processar pagamento');
+        });
+
+        return true;
+    }
+
+    showPaymentSuccess(coinsSpent) {
+        const paymentMethods = document.querySelector('.payment-methods');
+        const successMessage = document.createElement('div');
+        successMessage.className = 'coins-payment-success';
+        successMessage.innerHTML = `
+            <strong>✅ Pagamento realizado com sucesso!</strong><br>
+            ${coinsSpent.toLocaleString()} moedas foram debitadas da sua conta.<br>
+            Saldo atual: ${this.userCoins.toLocaleString()} moedas
+        `;
+        
+        paymentMethods.appendChild(successMessage);
+        
+        setTimeout(() => {
+            successMessage.remove();
+        }, 5000);
+    }
+
+    clearCart() {
+        setTimeout(() => {
+            window.location.href = 'purchase_success.php';
+        }, 2000);
+    }
+}
+
+// Inicialização
+document.addEventListener('DOMContentLoaded', function() {
+    const coinSystem = new CoinPaymentSystem();
+    
+    const checkoutForm = document.querySelector('form');
+    if (checkoutForm) {
+        checkoutForm.addEventListener('submit', function(e) {
+            const selectedPayment = document.querySelector('input[name="payment_method"]:checked');
+            
+            if (selectedPayment && selectedPayment.value === 'moedas') {
+                e.preventDefault();
+                coinSystem.processCoinsPayment();
+            }
+        });
+    }
+});

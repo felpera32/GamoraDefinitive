@@ -232,3 +232,88 @@ body {
     text-decoration: underline;
     color: #45a049;
 }
+
+
+
+
+
+
+
+.payment-method.coins {
+    position: relative;
+    padding: 10px;
+    border-radius: 6px;
+    transition: background-color 0.3s;
+}
+
+.payment-method.coins.sufficient {
+    background-color: rgba(76, 175, 80, 0.1);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.payment-method.coins.insufficient {
+    background-color: rgba(255, 77, 77, 0.1);
+    border: 1px solid rgba(255, 77, 77, 0.3);
+}
+
+.coins-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-left: 25px;
+}
+
+.coins-balance {
+    font-size: 14px;
+    color: #ccc;
+}
+
+.coins-balance.sufficient {
+    color: #4CAF50;
+}
+
+.coins-balance.insufficient {
+    color: #ff4d4d;
+}
+
+.coins-required {
+    font-size: 12px;
+    color: #888;
+}
+
+.coins-icon {
+    color: #FFD700;
+    margin-right: 5px;
+}
+
+.payment-method input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.payment-method label.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.insufficient-funds-message {
+    background-color: rgba(255, 77, 77, 0.1);
+    border: 1px solid rgba(255, 77, 77, 0.3);
+    border-radius: 6px;
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #ff4d4d;
+    text-align: center;
+}
+
+.coins-payment-success {
+    background-color: rgba(76, 175, 80, 0.1);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    border-radius: 6px;
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #4CAF50;
+    text-align: center;
+}

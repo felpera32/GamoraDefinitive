@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     let images = [
-        "../src/Capas/stardew/capa.png",
+        "../src/Capas/stardew/Capa.jpg",
         
         "../src/Capas/stardew/gameplay1.jpg",
 

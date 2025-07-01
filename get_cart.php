@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'conexao.php';
+require_once 'conn.php';
 
 if (!isset($_SESSION['cliente_id'])) {
     echo json_encode(['sucesso' => false, 'mensagem' => 'Usuário não autenticado']);
@@ -21,7 +21,7 @@ try {
             JOIN produtos p ON iv.produto_id = p.id
             WHERE iv.cliente_id = ? AND iv.status = 'carrinho'";
 
-    $stmt = $conexao->prepare($sql);
+    $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $clienteId);
     $stmt->execute();
     $result = $stmt->get_result();

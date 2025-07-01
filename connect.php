@@ -4,11 +4,14 @@ $usuario = 'root';
 $senha = '';             
 $banco = 'gamoraloja';      
 
-$conexao = mysqli_connect($host, $usuario, $senha, $banco);
+$conn = new mysqli($host, $usuario, $senha, $banco);      
 
-if (!$conexao) {
-    die("Erro na conexão: " . mysqli_connect_error());
+
+if ($conn->connect_error) {
+    error_log("Database connection failed: " . $conn->connect_error);
+    
+    die("Connection failed: " . $conn->connect_error);
 }
 
-mysqli_set_charset($conexao, "utf8mb4");
+$conn->set_charset("utf8");
 ?>

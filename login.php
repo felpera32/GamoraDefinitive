@@ -3,18 +3,18 @@ session_start();
 
 require_once 'connect.php';
 
-if (!$conexao) {
+if (!$conn) {
     die("Erro de conexão: " . mysqli_connect_error());
 }
 
-function fazerLogin($conexao, $email, $senha) {
+function fazerLogin($conn, $email, $senha) {
     // Preparar consulta
     $query = "SELECT * FROM clientes WHERE email = ?";
-    $stmt = mysqli_prepare($conexao, $query);
+    $stmt = mysqli_prepare($conn, $query);
     
     if (!$stmt) {
         // bglh da mostrar o erro
-        die("Erro na preparação da consulta: " . mysqli_error($conexao));
+        die("Erro na preparação da consulta: " . mysqli_error($conn));
     }
     
     mysqli_stmt_bind_param($stmt, "s", $email);
@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: login.php?erro=campos_vazios");
         exit();
     } else {
-        if (fazerLogin($conexao, $email, $senha)) {
+        if (fazerLogin($conn, $email, $senha)) {
             // Verificar o tipo de usuário e redirecionar adequadamente
             if ($_SESSION['tipo_usuario'] == 'vendedor') {
                 header("Location: vendedor.php");
@@ -128,5 +128,5 @@ $erro = isset($_GET['erro']) ? $_GET['erro'] : null;
 
 <?php
 // Fechar conexão
-mysqli_close($conexao);
+mysqli_close($conn);
 ?>

@@ -13,38 +13,140 @@ session_start();
   <script src="script.js"></script>
 
   <style>
-    /* Navbar Styles */
 
 
-    /* Original styles */
-    .spiderman-box {
-      background-color: #0f2f6b;
-      padding: 20px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      margin-left: 6%;
-      width: 82%;
-      margin-top: 2%;
-    }
 
-    .spiderman-image {
-      width: 30%;
-      border-radius: 10px;
-    }
 
-    .spiderman-detalhes {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      margin-left: 15%;
-    }
 
-    .spiderman-box h2 {
-      margin-right: 33%;
-      margin-top: 0%;
-      font-size: 50px;
-    }
+.spiderman-hero {
+    background-color: #0f2f6b;;
+    border: 3px solid #ff6b6b;
+    border-radius: 15px;
+    padding: 30px;
+    margin: 3% auto;
+    width: 85%;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+    overflow: hidden;
+}
+
+.spiderman-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 107, 107, 0.1) 0%, transparent 70%);
+    animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+}
+
+.spiderman-container {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    position: relative;
+    z-index: 2;
+}
+
+.spiderman-image {
+    width: 733px;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease;
+}
+
+.spiderman-image:hover {
+    transform: scale(1.05);
+}
+
+.spiderman-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.spiderman-title {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #ff6b6b;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.spiderman-subtitle {
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin: 0;
+    opacity: 0.9;
+}
+
+.spiderman-price {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #7ed957;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin: 10px 0;
+}
+
+.spiderman-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #e0e0e0;
+    margin: 15px 0;
+}
+
+.spiderman-btn {
+    background: linear-gradient(45deg, #7ed957, #5cb342);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(126, 217, 87, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.spiderman-btn:hover {
+    background: linear-gradient(45deg, #5cb342, #4a9c35);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(126, 217, 87, 0.6);
+}
+
+.spiderman-btn:active {
+    transform: translateY(-1px);
+}
+
+.featured-badge {
+    position: absolute;
+    top: -10px;
+    right: 30px;
+    background: linear-gradient(45deg, #ff6b6b, #ff4757);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+}
+
+
 
 
 
@@ -57,20 +159,6 @@ session_start();
       font-size: 20px;
     }
 
-    .comprar-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-      margin-right: 458px;
-      margin-top: -62px;
-    }
 
 
 
@@ -87,20 +175,27 @@ session_start();
 
   <main>
     <section class="produtos">
-      <div class="spiderman-box">
-        <img src="src/capas/spiderman/capa.jpg" alt="Spider-Man 2" class="spiderman-image">
-        <div class="spiderman-detalhes">
-          <h2>Spider-Man 2</h2>
-          <p class="preco">R$ 199,00</p>
+        <section class="spiderman-hero">
+            <div class="featured-badge">🕷️ DESTAQUE</div>
+            <div class="spiderman-container">
+                <img src="https://meups.com.br/wp-content/uploads/2023/06/spider-scaled.jpg" alt="Spider-Man 2" class="spiderman-image">
+                <div class="spiderman-details">
+                    <h1 class="spiderman-title">Spider-Man 2</h1>
+                    <p class="spiderman-subtitle">A aventura definitiva do Homem-Aranha</p>
+                    <div class="spiderman-price">R$ 199,00</div>
+                    <p class="spiderman-description">
+                        Embarque na aventura mais emocionante de Peter Parker e Miles Morales. 
+                        Explore uma Nova York vibrante, enfrente vilões icônicos e descubra 
+                        o poder de ser um herói. Gráficos impressionantes e jogabilidade fluida 
+                        te aguardam nesta experiência única.
+                    </p>
+                    <button class="spiderman-btn" onclick="redirecionarSpiderMan()">
+                        🛒 Comprar Agora
+                    </button>
+                </div>
+            </div>
+        </section>
 
-
-
-          <!-- Botão de comprar -->
-          <div class="buy-container">
-            <button class="comprar-btn" id="spiderman-button">🛒 Comprar</button>
-          </div>
-        </div>
-      </div>
 
       <div class="outros-produtos">
         <div class="produto">
@@ -230,9 +325,6 @@ session_start();
     </section>
   </main>
   
-  <script>
-
-  </script>
 
   <footer>
     <p>&copy; 2025 GAMORA. Todos os direitos reservados.</p>

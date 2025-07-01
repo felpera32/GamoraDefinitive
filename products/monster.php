@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jogo: Celeste</title>
+    <title>Monster Hunter</title>
     <link rel="stylesheet" href="../css/games.css">
     <script src="../js/game-monster.js"></script>
 </head>

@@ -12,8 +12,8 @@ $valores = [
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     include_once "connect.php";
 
-    if ($conexao->connect_error) {
-        die("Conexão falhou: " . $conexao->connect_error);
+    if ($conn->connect_error) {
+        die("Conexão falhou: " . $conn->connect_error);
     }
 
     // Armazenar valores para preencher o formulário em caso de erro
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $camposUtilizados = [];
         
         // Verifica o email
-        $stmt = $conexao->prepare("SELECT COUNT(*) FROM `clientes` WHERE email = ?");
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM `clientes` WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $stmt->bind_result($count);
@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         
         // Verifica o CPF
-        $stmt = $conexao->prepare("SELECT COUNT(*) FROM `clientes` WHERE cpf = ?");
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM `clientes` WHERE cpf = ?");
         $stmt->bind_param("s", $cpf);
         $stmt->execute();
         $stmt->bind_result($count);
@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         
         // Verifica o nome/nickname
-        $stmt = $conexao->prepare("SELECT COUNT(*) FROM `clientes` WHERE nome = ?");
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM `clientes` WHERE nome = ?");
         $stmt->bind_param("s", $user);
         $stmt->execute();
         $stmt->bind_result($count);
@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         
         // Verifica o telefone
-        $stmt = $conexao->prepare("SELECT COUNT(*) FROM `clientes` WHERE telefone = ?");
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM `clientes` WHERE telefone = ?");
         $stmt->bind_param("s", $phone);
         $stmt->execute();
         $stmt->bind_result($count);
@@ -87,9 +87,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $mensagemErro = implode(", ", $camposUtilizados) . " já utilizado(s)!";
         } else {
             // Nenhum campo duplicado, podemos inserir
-            $stmt = $conexao->prepare("INSERT INTO `clientes`(`nome`, `email`, `telefone`, `senha_hash`, `cpf`, `tipo_usuario`) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt = $conn->prepare("INSERT INTO `clientes`(`nome`, `email`, `telefone`, `senha_hash`, `cpf`, `tipo_usuario`) VALUES (?, ?, ?, ?, ?, ?)");
             if (!$stmt) {
-                die("Erro no prepare: " . $conexao->error);
+                die("Erro no prepare: " . $conn->error);
             }
 
             $stmt->bind_param("ssssss", $user, $email, $phone, $cript, $cpf, $dbUserType);
@@ -110,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mensagemErro = "Todos os campos são obrigatórios!";
     }
 
-    $conexao->close();
+    $conn->close();
 }
 ?>
 

@@ -151,25 +151,79 @@ function getImagemPrincipal($idProduto)
                 Total: R$ <?php echo number_format($valorTotal, 2, ',', '.'); ?>
             </div>
 
-            <div class="payment-methods">
-                <h3>Método de Pagamento</h3>
-                <?php
-                $paymentMethods = ['Cartão de crédito', 'Pix', 'PicPay', 'Boleto', 'Cripto'];
-                foreach ($paymentMethods as $index => $method) {
-                    $methodId = strtolower(str_replace(' ', '-', $method));
-                    $methodValue = strtolower(str_replace(' ', '-', $method));
-                    echo "<div class='payment-method'>
-                        <input type='radio' id='" . htmlspecialchars($methodId) . "' 
-                               name='payment_method' value='" . htmlspecialchars($methodValue) . "'"
-                               . ($index === 0 ? ' checked' : '') . ">
-                        <label for='" . htmlspecialchars($methodId) . "'>" . htmlspecialchars($method) . "</label>
-                      </div>";
+        <div class="payment-methods">
+            <h3>Método de Pagamento</h3>
+            <?php
+            // Simula buscar saldo de moedas do usuário (substitua pela sua lógica de banco de dados)
+            $userCoins = isset($_SESSION['user_coins']) ? $_SESSION['user_coins'] : 500;
+            
+            // Calcula total do carrinho em moedas (assumindo 1 dólar = 100 moedas)
+            $cartTotalDollars = 0; // Você deve calcular isso baseado nos itens do carrinho
+            $coinsPerDollar = 100;
+            $requiredCoins = $cartTotalDollars * $coinsPerDollar;
+            $hasSufficientCoins = $userCoins >= $requiredCoins;
+            
+            $paymentMethods = [
+                'Cartão de crédito',
+                'Pix', 
+                'PicPay', 
+                'Boleto', 
+                'Cripto',
+                'Moedas' 
+            ];
+            
+            foreach ($paymentMethods as $index => $method) {
+                $methodId = strtolower(str_replace(' ', '-', $method));
+                $methodValue = strtolower(str_replace(' ', '-', $method));
+                $isCoinsMethod = $method === 'Moedas';
+                $isDisabled = $isCoinsMethod && !$hasSufficientCoins;
+                $isChecked = $index === 0 && !$isDisabled;
+                
+                echo "<div class='payment-method" . ($isCoinsMethod ? ' coins' : '') . 
+                    ($isCoinsMethod ? ($hasSufficientCoins ? ' sufficient' : ' insufficient') : '') . "'>";
+                
+                echo "<input type='radio' id='" . htmlspecialchars($methodId) . "' 
+                            name='payment_method' value='" . htmlspecialchars($methodValue) . "'"
+                            . ($isChecked ? ' checked' : '')
+                            . ($isDisabled ? ' disabled' : '') . ">";
+                
+                echo "<label for='" . htmlspecialchars($methodId) . "'" . 
+                    ($isDisabled ? " class='disabled'" : "") . ">";
+                
+                if ($isCoinsMethod) {
+                    echo "<span class='coins-icon'>🪙</span>";
                 }
-                ?>
-            </div>
+                
+                echo htmlspecialchars($method) . "</label>";
+                
+                // info para pagamento com moedas
+                if ($isCoinsMethod) {
+                    echo "<div class='coins-info'>
+                            <div class='coins-balance " . ($hasSufficientCoins ? 'sufficient' : 'insufficient') . "'>
+                                Saldo: <span id='user-coins'>" . number_format($userCoins) . "</span> moedas
+                            </div>
+                            <div class='coins-required'>
+                                Necessário: <span id='total-coins-needed'>" . number_format($requiredCoins) . "</span> moedas
+                            </div>
+                        </div>";
+                }
+                
+                echo "</div>";
+            }
+            
+            // msg de fundos insuficientes
+            if (!$hasSufficientCoins && $requiredCoins > 0) {
+                $missingCoins = $requiredCoins - $userCoins;
+                echo "<div id='insufficient-funds' class='insufficient-funds-message'>
+                        Saldo insuficiente! Você precisa de mais " . number_format($missingCoins) . " moedas.
+                    </div>";
+            }
+            ?>
+        </div>
+
 
             <form method="POST" action="finalizar_compra.php" id="checkout-form">
-                <input type="hidden" name="idCliente" value="1">
+                <input type="hidden" name="idCliente" value="<?php echo $_SESSION['id_usuario'] ?? 0; ?>">
                 <input type="hidden" name="payment_method" id="selected_payment">
                 <button type="submit" class="finalize-button">Finalizar Compra</button>
             </form>

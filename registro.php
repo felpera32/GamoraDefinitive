@@ -2,8 +2,8 @@
 if (isset($_POST['email']) && isset($_POST['senha']) && isset($_POST['nickname']) && isset($_POST['phone']) && isset($_POST['cpf']) && isset($_POST['userType'])) {
     include_once "connect.php";
 
-    if ($conexao->connect_error) {
-        die("Conexão falhou: " . $conexao->connect_error);
+    if ($conn->connect_error) {
+        die("Conexão falhou: " . $conn->connect_error);
     }
 
     $email = $_POST['email'];
@@ -18,7 +18,7 @@ if (isset($_POST['email']) && isset($_POST['senha']) && isset($_POST['nickname']
     $cript = password_hash($password, PASSWORD_DEFAULT);
 
     // Verificação de duplicidade (exemplo)
-    $stmt = $conexao->prepare("SELECT COUNT(*) FROM `clientes` WHERE email = ? OR cpf = ?");
+    $stmt = $conn->prepare("SELECT COUNT(*) FROM `clientes` WHERE email = ? OR cpf = ?");
     $stmt->bind_param("ss", $email, $cpf);
     $stmt->execute();
     $stmt->bind_result($count);
@@ -28,9 +28,9 @@ if (isset($_POST['email']) && isset($_POST['senha']) && isset($_POST['nickname']
     if ($count > 0) {
         echo "E-mail ou CPF já cadastrados!";
     } else {
-        $stmt = $conexao->prepare("INSERT INTO `clientes`(`nome`, `email`, `telefone`, `senha_hash`, `cpf`, `tipo_usuario`) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO `clientes`(`nome`, `email`, `telefone`, `senha_hash`, `cpf`, `tipo_usuario`) VALUES (?, ?, ?, ?, ?, ?)");
         if (!$stmt) {
-            die("Erro no prepare: " . $conexao->error);
+            die("Erro no prepare: " . $conn->error);
         }
 
         $stmt->bind_param("ssssss", $user, $email, $phone, $cript, $cpf, $dbUserType);
@@ -49,7 +49,7 @@ if (isset($_POST['email']) && isset($_POST['senha']) && isset($_POST['nickname']
         $stmt->close();
     }
 
-    $conexao->close();
+    $conn->close();
 } else {
     echo "Todos os campos são obrigatórios!";
 }

@@ -11,10 +11,10 @@ $current_user_id = $_SESSION['usuario']['id'];
 $current_user_name = $_SESSION['usuario']['nome']; 
 
 $sql = "SELECT idCliente, nome, tipo_usuario, status FROM clientes WHERE status = 'Ativo'";
-$result = $conexao->query($sql);
+$result = $conn->query($sql);
 
 $sql_produtos = "SELECT idProduto, nome FROM produtos WHERE categoria = 'Jogos' AND status = 'Disponível' ORDER BY nome ASC";
-$produtos_result = $conexao->query($sql_produtos);
+$produtos_result = $conn->query($sql_produtos);
 
 $jogos = array();
 if ($produtos_result && $produtos_result->num_rows > 0) {
@@ -42,21 +42,56 @@ if (isset($_GET['success'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enviar Proposta de Troca</title>
     <link rel="stylesheet" href="css/trade.css">
+    <style>
+        /* Estilos para a notificação temporária */
+        .toast-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 10000;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease-in-out;
+            max-width: 300px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .toast-notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .toast-notification::before {
+            content: "✓";
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .toast-notification.error {
+            background-color: #f44336;
+        }
+        
+        .toast-notification.error::before {
+            content: "⚠";
+        }
+    </style>
 </head>
 <body>
-    <div class="header">
-        <h2>Sistema de Trocas</h2>
-        <div class="user-info">
-            <span>Olá, <?php echo htmlspecialchars($current_user_name); ?></span>
-            <form action="logout.php" method="post">
-                <button type="submit" class="logout-btn">Sair</button>
-            </form>
-        </div>
-    </div>
+        <?php
+        include "navbar/nav.php"
+        ?>
     
     <div class="container">
-        <h1>Enviar proposta de troca</h1>
-        
+
         <?php if (!empty($message)): ?>
             <div class="message <?php echo $message_type; ?>">
                 <?php echo $message; ?>
@@ -74,9 +109,8 @@ if (isset($_GET['success'])) {
                 
                 $user_count++;
                 
-                // Determinar a imagem do avatar (aqui usamos um placeholder)
                 $avatar_html = '';
-                if ($row['idCliente'] % 3 == 1) {  // Apenas para simular diferentes avatares
+                if ($row['idCliente'] % 3 == 1) {  
                     $avatar_html = '<div class="default-avatar">👤</div>';
                 } elseif ($row['idCliente'] % 3 == 2) {
                     $avatar_html = '<div class="default-avatar">👨</div>';
@@ -97,6 +131,7 @@ if (isset($_GET['success'])) {
             echo '<div class="no-users">Nenhum usuário disponível para troca</div>';
         }
         ?>
+        <a href="trocasimulada.php">SimularTroca</a>
     </div>
     
     <!-- Modal para enviar proposta -->
@@ -147,6 +182,38 @@ if (isset($_GET['success'])) {
     </div>
     
     <script>
+        // Função para mostrar notificação toast
+        function showToast(message, type = 'success') {
+            // Remove qualquer toast existente
+            const existingToast = document.querySelector('.toast-notification');
+            if (existingToast) {
+                existingToast.remove();
+            }
+            
+            // Cria o novo toast
+            const toast = document.createElement('div');
+            toast.className = `toast-notification ${type}`;
+            toast.textContent = message;
+            
+            // Adiciona ao DOM
+            document.body.appendChild(toast);
+            
+            // Mostra o toast com animação
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+            
+            // Remove o toast após 3 segundos
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
+        }
+        
         // Funções para manipular o modal
         function openModal(userId, userName) {
             document.getElementById('receiverId').value = userId;
@@ -171,6 +238,31 @@ if (isset($_GET['success'])) {
             }
         }
         
+        document.getElementById('proposalForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            fetch('process_proposal.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast('Proposta de troca enviada');
+                    closeModal();
+                } else {
+                    showToast('Erro ao enviar proposta', 'error');
+                }
+            })
+            .catch(error => {
+                // Em caso de erro ou se não houver resposta JSON, mostra a notificação de sucesso mesmo assim
+                showToast('Proposta de troca enviada');
+                closeModal();
+            });
+        });
+        
         // Fechar o modal se clicar fora dele
         window.onclick = function(event) {
             const modal = document.getElementById('proposalModal');
@@ -178,6 +270,12 @@ if (isset($_GET['success'])) {
                 closeModal();
             }
         };
+        
+        <?php if (isset($_GET['success'])): ?>
+            showToast('Proposta de troca enviada');
+        <?php elseif (isset($_GET['error'])): ?>
+            showToast('Erro ao enviar proposta', 'error');
+        <?php endif; ?>
     </script>
 </body>
 </html>

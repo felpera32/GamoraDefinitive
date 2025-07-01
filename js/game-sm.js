@@ -6,28 +6,28 @@ function entrarpag() {
 
 
 const favoriteButton = document.getElementById("favorite-button");
-if (favoriteButton) {
-    favoriteButton.addEventListener("click", function () {
-        // animação no clique
-        this.classList.add("clicked");
-        setTimeout(() => this.classList.remove("clicked"), 200);
-        
+    if (favoriteButton) {
+        favoriteButton.addEventListener("click", function () {
+            // animação no clique
+            this.classList.add("clicked");
+            setTimeout(() => this.classList.remove("clicked"), 200);
+            
 
-        this.classList.toggle("red");
+            this.classList.toggle("red");
 
-        const coracao = document.getElementById("coracao");
-        if (coracao) {
-            if (this.classList.contains("red")) {
-                //animação pulsando
-                favoriteButton.style.transform = "scale(1.1)";
-                setTimeout(() => favoriteButton.style.transform = "scale(1)", 150);
-                coracao.textContent = "FAVORITADO";
-            } else {
-                coracao.textContent = "FAVORITAR";
+            const coracao = document.getElementById("coracao");
+            if (coracao) {
+                if (this.classList.contains("red")) {
+                    //animação pulsando
+                    favoriteButton.style.transform = "scale(1.1)";
+                    setTimeout(() => favoriteButton.style.transform = "scale(1)", 150);
+                    coracao.textContent = "FAVORITADO";
+                } else {
+                    coracao.textContent = "FAVORITAR";
+                }
             }
-        }
-    });
-}
+        });
+    }
 
 
 
@@ -40,15 +40,15 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     let images = [
-        "../src/Capas/spiderman/spiderman2.jpg",
+        "https://meups.com.br/wp-content/uploads/2023/06/spider-scaled.jpg",
         
-        "../src/Capas/spiderman/gameplay1.jpg",
+        "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2651280/ss_e4b67059ddedaeebd91fce113745f3eb99736f56.1920x1080.jpg?t=1750954033",
 
-        "../src/Capas/spiderman/gameplay2.jpg",
+        "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2651280/ss_b4be948946130b7e140be82f24f1f9ccefae9117.1920x1080.jpg?t=1750954033",
 
-        "../src/Capas/spiderman/gameplay3.jpg",
+        "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2651280/ss_f4140ba12158b812d9c1adc86c484d8e84b92e92.1920x1080.jpg?t=1750954033",
 
-        "../src/Capas/spiderman/gameplay4.jpg"
+        "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2651280/ss_c6a0adf568d91d49a5c0f7f5e4df7e1cef71ee28.1920x1080.jpg?t=1750954033"
     ];
 
     let currentIndex = 0;

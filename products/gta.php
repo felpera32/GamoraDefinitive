@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jogo: Celeste</title>
+    <title>GTA 6</title>
     <link rel="stylesheet" href="../css/games.css">
     <script src="../js/game-gta.js"></script>
 </head>
@@ -40,26 +40,26 @@
     <div class="main-container">
         <div class="left-column">
             <div class="game-image-container">
-                <button class="nav prev" id="prev">&#10094;</button>
+                <button class="prev" id="prev">&#10094;</button>
                 <img id="mainImage" src="../src/Capas/gta/capa.jpg" alt="red dead">
-                <button class="nav next" id="next">&#10095;</button>
+                <button class="next" id="next">&#10095;</button>
             </div>
             <div class="thumbnails">
-                <img class="thumb active" src="../src/Capas/gta/capa.jpg" alt="Thumbnail 1"
+                <img class="thumb active" src="../src/Capas/gta/capa.jpg" alt="Thumbnail"
                     onclick="changeImage('../src/Capas/gta/capa.jpg', this)">
 
-                <img class="thumb" src="../src/Capas/gta/gameplay1.png" alt="Thumbnail 1"
-                    onclick="changeImage('../src/Capas/gta/gameplay1.png', this)">
+                <img class="thumb" src="../src/Capas/gta/gameplay1.jpg" alt="Thumbnail 1"
+                    onclick="changeImage('../src/Capas/gta/gameplay1.jpg', this)">
 
                 
-                <img class="thumb" src="../src/Capas/gta/gameplay2.png" alt="Thumbnail 2"
-                    onclick="changeImage('../src/Capas/gta/gameplay2.png', this)">
+                <img class="thumb" src="../src/Capas/gta/gameplay2.jpg" alt="Thumbnail 2"
+                    onclick="changeImage('../src/Capas/gta/gameplay2.jpg', this)">
 
-                <img class="thumb" src="../src/Capas/gta/gameplay3.png" alt="Thumbnail 3"
-                    onclick="changeImage('../src/Capas/gta/gameplay3.png', this)">
+                <img class="thumb" src="../src/Capas/gta/gameplay3.jpg" alt="Thumbnail 3"
+                    onclick="changeImage('../src/Capas/gta/gameplay3.jpg', this)">
 
-                <img class="thumb" src="../src/Capas/gta/gameplay4.png" alt="Thumbnail 4"
-                    onclick="changeImage('../src/Capas/gta/gameplay4.png', this)">
+                <img class="thumb" src="../src/Capas/gta/gameplay4.jpg" alt="Thumbnail 4"
+                    onclick="changeImage('../src/Capas/gta/gameplay4.jpg', this)">
 
             </div>
         </div>
