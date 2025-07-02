@@ -241,7 +241,7 @@ session_start();
 
       <div class="outros-produtos2">
         <div class="produto">
-          <img src="https://cdn2.unrealengine.com/cva-epic-epic-hero-carousel-1920x1080-1920x1080-f1c07af7e1dd.jpg" alt="Civilizations 6">
+          <img src="https://www.oficinadanet.com.br/imagens/post/31109/capa-requisitos-minimos-para-rodar-sid-meier-s-civilization-vi-no-pc.png" alt="Civilizations 6">
           <h3>Civilizations 6</h3>
           <p>R$ 129,00</p>
           <div class="produto-botoes">
@@ -271,7 +271,7 @@ session_start();
         </div>
 
         <div class="produto">
-          <img src="https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/ncom/software/switch/70010000060372/e77cbe3c83da8de952bce5bc0f0960092dbc2e08d377f0e082673239322301bb" alt="Dave The Diver">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyvHbDoI_k79-meUcw1V0MGOW6hpERl8Ctqg&s" alt="Dave The Diver">
           <h3>Dave The Diver</h3>
           <p>R$ 59,00</p>
           <div class="produto-botoes">
@@ -303,7 +303,7 @@ session_start();
         </div>
 
         <div class="produto">
-          <img src="https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/ncom/software/switch/70010000006442/691ba3e0801180a9864cc8a7694b6f98097f9d9799bc7e3dc6db92f086759252" alt="Celeste">
+          <img src="https://www.gamerpoint.com.br/wp-content/uploads/2020/05/celeste-capa.jpg" alt="Celeste">
           <h3>Celeste</h3>
           <p>R$ 40,00</p>
           <div class="produto-botoes">

@@ -1,14 +1,39 @@
 <?php
+// Inicia a sessão ANTES de qualquer output
 session_start();
+
+// Debug das variáveis de sessão (remova depois de testar)
+error_log("=== DEBUG CARRINHO ===");
+error_log("Session ID: " . session_id());
+error_log("usuario_logado: " . (isset($_SESSION['usuario_logado']) ? var_export($_SESSION['usuario_logado'], true) : 'não definido'));
+error_log("nome_usuario: " . (isset($_SESSION['nome_usuario']) ? $_SESSION['nome_usuario'] : 'não definido'));
+error_log("id_usuario: " . (isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : 'não definido'));
+error_log("Todas as sessões: " . print_r($_SESSION, true));
+error_log("=====================");
+
 include 'connect.php';
 
-// Verificar se o usuário está logado
+// Verificação de sessão mais simples e clara
 if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true) {
-    // Salvar a URL atual para redirecionar de volta após o login
+    error_log("Usuário não logado - redirecionando para login");
     $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI'];
-    // Redirecionar para a página de login
     header('Location: login.php');
     exit;
+}
+
+// Verificar se tem id_usuario (necessário para o formulário)
+if (!isset($_SESSION['id_usuario'])) {
+    error_log("ID do usuário não encontrado na sessão");
+    // Se não tem id_usuario mas está logado, tentar pegar do array usuario
+    if (isset($_SESSION['usuario']['id'])) {
+        $_SESSION['id_usuario'] = $_SESSION['usuario']['id'];
+        error_log("ID do usuário recuperado do array usuario: " . $_SESSION['id_usuario']);
+    } else {
+        error_log("ID do usuário não encontrado - forçando novo login");
+        session_destroy();
+        header('Location: login.php');
+        exit;
+    }
 }
 
 $carrinhoVazio = empty($_SESSION['carrinho']);
@@ -21,7 +46,6 @@ if (!$carrinhoVazio) {
     }
 }
 
-// Função para criar uma nova conexão sempre que necessário
 function criarNovaConexao() {
     $servername = "localhost";
     $username = "root";
@@ -34,7 +58,6 @@ function criarNovaConexao() {
         throw new Exception("Falha na conexão: " . $novaConn->connect_error);
     }
     
-    // Definir charset para evitar problemas de codificação
     $novaConn->set_charset("utf8");
     
     return $novaConn;
@@ -221,10 +244,10 @@ function getImagemPrincipal($idProduto)
             ?>
         </div>
 
-
             <form method="POST" action="finalizar_compra.php" id="checkout-form">
-                <input type="hidden" name="idCliente" value="<?php echo $_SESSION['id_usuario'] ?? 0; ?>">
+                <input type="hidden" name="idCliente" value="<?php echo isset($_SESSION['id_usuario']) ? intval($_SESSION['id_usuario']) : 0; ?>">
                 <input type="hidden" name="payment_method" id="selected_payment">
+                <input type="hidden" name="csrf_token" value="<?php echo isset($_SESSION['csrf_token']) ? $_SESSION['csrf_token'] : ''; ?>">
                 <button type="submit" class="finalize-button">Finalizar Compra</button>
             </form>
 
@@ -235,7 +258,17 @@ function getImagemPrincipal($idProduto)
                     const selectedMethod = document.querySelector('input[name="payment_method"]:checked');
                     if (selectedMethod) {
                         document.getElementById('selected_payment').value = selectedMethod.value;
+                    } else {
+                        e.preventDefault();
+                        alert('Por favor, selecione um método de pagamento.');
+                        return false;
                     }
+                    
+                    // Debug - verificar se os dados estão sendo enviados
+                    console.log('Dados do formulário:', {
+                        idCliente: document.querySelector('input[name="idCliente"]').value,
+                        payment_method: document.getElementById('selected_payment').value
+                    });
                 });
             </script>
         <?php endif; ?>

@@ -41,8 +41,10 @@ body {
 
 
 .produto-botoes{
-    background: linear-gradient(45deg, #7ed957, #5cb342);
-    color: white;
+    box-sizing: border-box;
+    background-color: transparent;
+    border: none;
+    background: linear-gradient(45deg, #7ed957, #5cb342);    color: white;
     border: none;
     padding: 10px;
     border-radius: 5px;
@@ -50,14 +52,21 @@ body {
     transition: background-color 0.3s;
 }
 
-.produto-botoes{
-    background: linear-gradient(45deg, #5cb342, #4a9c35);
+.produto-botoes:hover{
+        background: linear-gradient(45deg, #5cb342, #4a9c35);
     transform: translateY(-3px);
     box-shadow: 0 8px 25px rgba(126, 217, 87, 0.6);
 }
 
+.produto-botoes:active{
+            transform: translateY(-1px);
 
-
+}
+button{
+    background-color: transparent;
+    border: none;
+    color: white;
+}
 .outros-produtos2 {
     display: flex;
     flex-direction: row;
@@ -72,14 +81,10 @@ body {
 .outros-produtos3 {
     display: flex;
     flex-direction: row;
-    /* Coloca os produtos em coluna */
     gap: 20px;
-    /* Espaçamento entre cada produto */
     margin: 0 auto;
-    /* Centraliza os outros produtos */
     margin-top: 5%;
 }
-
 
 
 
